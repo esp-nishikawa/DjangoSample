@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}メールアドレス変更ページ{% endblock %}
+
+{% block content %}
+<div class="card bg-light m-auto" style="max-width: 600px;">
+  <div class="card-body p-5">
+    <h1 class="card-title h2 text-center p-4">メールアドレス変更</h1>
+
+    <p class="card-text">
+      メールアドレスを変更する場合、新しいメールアドレスを入力してください。<br>
+      メールアドレス変更用メールをお送りします。
+    </p>
+
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="my-3">
+        {{ field }}
+        {% for error in field.errors %}
+        <p class="text-danger">{{ error }}</p>
+        {% endfor %}
+      </div>
+      {% endfor %}
+      <div class="text-center my-4">
+        <a class="btn btn-outline-primary mr-4" href="{% url 'webapp:user_detail' user.pk %}">戻る</a>
+        <button type="submit" class="btn btn-primary">送信</button>
+      </div>
+    </form>
+
+    {% for error in form.non_field_errors %}
+    <p class="card-text text-danger">{{ error }}</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

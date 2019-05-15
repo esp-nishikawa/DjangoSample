@@ -1,0 +1,36 @@
+{% load static %}
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DjangoSampleのページです。">
+    <title>{% block title %}DjangoSample{% endblock %}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="{% static "css/common.css" %}" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand" href="{% url 'webapp:top' %}">DjangoSample</a>
+      {% if user.is_authenticated %}
+      <a class="nav-link ml-auto" href="{% url 'webapp:user_detail' user.pk %}">ユーザー情報</a>
+      <a class="nav-link" href="{% url 'webapp:logout' %}">ログアウト</a>
+      {% endif %}
+    </nav>
+
+    {% if messages %}
+    <div class="container">
+      {% for message in messages %}
+      <div class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}">
+        <pre class="message">{{ message }}</pre>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,3 @@
+下記URLよりサイトにアクセスすると、ユーザー登録が完了します。
+
+{{ protocol }}://{{ domain }}{% url 'webapp:user_creation_complete' token %}

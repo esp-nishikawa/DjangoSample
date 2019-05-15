@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}ユーザー情報ページ{% endblock %}
+
+{% block content %}
+<div class="card bg-light m-auto" style="max-width: 600px;">
+  <div class="card-body p-5">
+    <h1 class="card-title h2 text-center p-4">ユーザー情報</h1>
+
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th>メールアドレス</th>
+          <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+          <th>登録日時</th>
+          <td>{{ user.date_joined }}</td>
+        </tr>
+        <tr>
+          <th>ログイン日時</th>
+          <td>{{ user.last_login }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="text-center">
+      <a href="{% url 'webapp:email_change' %}" class="card-link">メールアドレスの変更はこちら</a>
+    </p>
+    <p class="text-center">
+      <a href="{% url 'webapp:password_change' %}" class="card-link">パスワードの変更はこちら</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

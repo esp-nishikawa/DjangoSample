@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+  <p class="text-center">
+    <a class="btn btn-primary" href="{% url 'webapp:top' %}">トップページへ</a>
+  </p>
+  {% else %}
+  <p class="text-center">
+    <a class="btn btn-primary" href="{% url 'webapp:login' %}">ログインページへ</a>
+  </p>
+  {% endif %}
+{% endblock %}
