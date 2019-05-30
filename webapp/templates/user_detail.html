@@ -30,6 +30,12 @@
     <p class="text-center">
       <a href="{% url 'webapp:password_change' %}" class="card-link">パスワードの変更はこちら</a>
     </p>
+    <p class="text-center">
+      <a href="{% url 'webapp:user_delete' user.pk %}" class="card-link">ユーザーの削除はこちら</a>
+    </p>
+    <p class="text-center mt-4">
+      <a class="btn btn-primary" href="{% url 'webapp:top' %}">トップページへ</a>
+    </p>
   </div>
 </div>
 {% endblock %}

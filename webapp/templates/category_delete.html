@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}カテゴリ削除ページ{% endblock %}
+
+{% block content %}
+<div class="card bg-light m-auto" style="max-width: 600px;">
+  <div class="card-body p-5">
+    <h1 class="card-title h2 text-center p-4">カテゴリ削除</h1>
+
+    <p class="card-text">{{ category.name }}を削除します。よろしいですか？</p>
+    {% if item_list %}
+    <p class="card-text">
+      次のアイテムも削除されます。<br>
+      {% for item in item_list %}
+      {{ item.title }}
+      {% if not forloop.last %}、{% endif %}
+      {% endfor %}
+    </p>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="text-center my-4">
+        <button type="button" class="btn btn-outline-primary mr-4" onClick="window.history.back()">戻る</button>
+        <button type="submit" class="btn btn-primary">削除</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

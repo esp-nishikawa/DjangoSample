@@ -1,9 +1,9 @@
 from django import forms
-from django.contrib.auth import get_user_model, forms as auth_forms
+from django.contrib.auth import forms as auth_forms
+from .models import User, Category, Item
 
-User = get_user_model()
 
-class LoginForm(auth_forms.AuthenticationForm):
+class AuthenticationForm(auth_forms.AuthenticationForm):
     """
     ログインフォーム
     """
@@ -12,6 +12,7 @@ class LoginForm(auth_forms.AuthenticationForm):
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = field.label
+
 
 class UserCreationForm(auth_forms.UserCreationForm):
     """
@@ -31,6 +32,7 @@ class UserCreationForm(auth_forms.UserCreationForm):
         email = self.cleaned_data['email']
         User.objects.filter(email=email, is_active=False).delete()
         return email
+
 
 class EmailChangeForm(forms.ModelForm):
     """
@@ -52,6 +54,7 @@ class EmailChangeForm(forms.ModelForm):
         User.objects.filter(email=email, is_active=False).delete()
         return email
 
+
 class PasswordChangeForm(auth_forms.PasswordChangeForm):
     """
     パスワード変更フォーム
@@ -60,6 +63,7 @@ class PasswordChangeForm(auth_forms.PasswordChangeForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+
 
 class PasswordResetForm(auth_forms.PasswordResetForm):
     """
@@ -71,6 +75,7 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = field.label
 
+
 class SetPasswordForm(auth_forms.SetPasswordForm):
     """
     パスワード再設定フォーム
@@ -79,3 +84,43 @@ class SetPasswordForm(auth_forms.SetPasswordForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+
+
+class CategoryForm(forms.ModelForm):
+    """
+    カテゴリフォーム
+    """
+    class Meta:
+        model = Category
+        fields = ('name',)
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+            }),
+        }
+
+
+class ItemForm(forms.ModelForm):
+    """
+    アイテムフォーム
+    """
+    class Meta:
+        model = Item
+        fields = ('title','description','image','url','mark',)
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+            }),
+            'image': forms.ClearableFileInput(attrs={
+                'class': 'form-control-file',
+            }),
+            'url': forms.URLInput(attrs={
+                'class': 'form-control',
+            }),
+            'mark': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+        }

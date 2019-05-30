@@ -130,6 +130,10 @@ AUTH_USER_MODEL = 'webapp.User'
 LOGIN_URL = 'webapp:login'
 LOGIN_REDIRECT_URL = 'webapp:top'
 
+# 画像ファイル
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # メッセージのタグをbootstrapのクラス名に合わせる
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {

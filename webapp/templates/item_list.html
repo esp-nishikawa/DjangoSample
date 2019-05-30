@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}アイテム一覧ページ{% endblock %}
+
+{% block content %}
+
+<ol class="breadcrumb">
+  {% if category_count > 0 %}
+  <li class="breadcrumb-item h3"><a href="{% url 'webapp:top' %}">カテゴリ</a></li>
+  {% endif %}
+  {% if category %}
+  <li class="breadcrumb-item h3 active">{{ category.name }}</li>
+  {% else %}
+  <li class="breadcrumb-item h3 active">カテゴリなし</li>
+  {% endif %}
+</ol>
+
+<form method="post">
+  {% csrf_token %}
+  {% for item in item_list %}
+  <div class="card border-dark mb-2">
+    <div class="card-header">
+      <div class="row align-items-center">
+        <div class="col">
+          {% if item.mark %}
+          {{ item.get_mark_display }}
+          {% endif %}
+          {% if item.url %}
+          <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer">{{ item.title }}</a>
+          {% else %}
+          {{ item.title }}
+          {% endif %}
+        </div>
+        <div class="col-auto px-2">
+          <button type="submit" name="up" value="{{ item.pk }}" class="icon-btn"{% if first_pk == item.pk %} disabled{% endif %}><i class="material-icons">arrow_upward</i></button>
+        </div>
+        <div class="col-auto px-2">
+          <button type="submit" name="down" value="{{ item.pk }}" class="icon-btn"{% if last_pk == item.pk %} disabled{% endif %}><i class="material-icons">arrow_downward</i></button>
+        </div>
+        <div class="col-auto px-2">
+          <a class="icon-btn" href="{% url 'webapp:item_update' item.pk %}{% if category %}?category={{ category.pk }}{% endif %}"><i class="material-icons">edit</i></a>
+        </div>
+        <div class="col-auto px-2">
+          <a class="icon-btn" href="{% url 'webapp:item_delete' item.pk %}{% if category %}?category={{ category.pk }}{% endif %}"><i class="material-icons">clear</i></a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        {% if item.image %}
+        <div class="col-4">
+          <img src="{{ item.image.url }}" width="100%">
+        </div>
+        {% endif %}
+        <div class="col">
+          {{ item.description | linebreaksbr }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</form>
+
+<div class="card border-grey mb-2">
+  <div class="card-body p-3">
+    <div class="row align-items-center">
+      <div class="col">
+        <a href="{% url 'webapp:item_create' %}{% if category %}?category={{ category.pk }}{% endif %}"><i class="material-icons">add</i>アイテム追加</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if category_count == 0 %}
+<div class="card border-grey mb-2">
+  <div class="card-body p-3">
+    <div class="row align-items-center">
+      <div class="col">
+        <a href="{% url 'webapp:category_create' %}"><i class="material-icons">add</i>カテゴリ追加</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="row justify-content-center mt-4">
+  {% include "./pagination.html" %}
+</div>
+
+{% endblock %}

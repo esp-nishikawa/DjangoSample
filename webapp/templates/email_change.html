@@ -15,15 +15,18 @@
     <form method="post">
       {% csrf_token %}
       {% for field in form %}
-      <div class="my-3">
-        {{ field }}
+      <div class="form-group">
+        <div>{{ field }}</div>
+        {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+        {% endif %}
         {% for error in field.errors %}
-        <p class="text-danger">{{ error }}</p>
+        <small class="form-text text-danger">{{ error }}</small>
         {% endfor %}
       </div>
       {% endfor %}
       <div class="text-center my-4">
-        <a class="btn btn-outline-primary mr-4" href="{% url 'webapp:user_detail' user.pk %}">戻る</a>
+        <button type="button" class="btn btn-outline-primary mr-4" onClick="window.history.back()">戻る</button>
         <button type="submit" class="btn btn-primary">送信</button>
       </div>
     </form>

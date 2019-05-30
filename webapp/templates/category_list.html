@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}カテゴリ一覧ページ{% endblock %}
+
+{% block content %}
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item h3 active">カテゴリ</li>
+</ol>
+
+<form method="post">
+  {% csrf_token %}
+  {% for category in category_list %}
+  <div class="card border-dark mb-2">
+    <div class="card-body p-3">
+      <div class="row align-items-center">
+        <div class="col">
+          <a href="{% url 'webapp:item_list' %}?category={{ category.pk }}">{{ category.name }}</a>
+          <span>({{ category.item_count }})</span>
+        </div>
+        <div class="col-auto px-2">
+          <button type="submit" name="up" value="{{ category.pk }}" class="icon-btn"{% if first_pk == category.pk %} disabled{% endif %}><i class="material-icons">arrow_upward</i></button>
+        </div>
+        <div class="col-auto px-2">
+          <button type="submit" name="down" value="{{ category.pk }}" class="icon-btn"{% if last_pk == category.pk %} disabled{% endif %}><i class="material-icons">arrow_downward</i></button>
+        </div>
+        <div class="col-auto px-2">
+          <a class="icon-btn" href="{% url 'webapp:category_update' category.pk %}"><i class="material-icons">edit</i></a>
+        </div>
+        <div class="col-auto px-2">
+          <a class="icon-btn" href="{% url 'webapp:category_delete' category.pk %}"><i class="material-icons">clear</i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</form>
+
+<div class="card border-dark mb-2">
+  <div class="card-body p-3">
+    <div class="row align-items-center">
+      <div class="col">
+        <a href="{% url 'webapp:item_list' %}">カテゴリなし</a>
+        <span>({{ null_item_count }})</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card border-grey mb-2">
+  <div class="card-body p-3">
+    <div class="row align-items-center">
+      <div class="col">
+        <a href="{% url 'webapp:category_create' %}"><i class="material-icons">add</i>カテゴリ追加</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center mt-4">
+  {% include "./pagination.html" %}
+</div>
+
+{% endblock %}

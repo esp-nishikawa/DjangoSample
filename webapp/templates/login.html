@@ -10,7 +10,7 @@
     <form method="post" action="{% url 'webapp:login' %}">
       {% csrf_token %}
       {% for field in form %}
-      <div class="my-3">
+      <div class="form-group">
         {{ field }}
       </div>
       {% endfor %}
@@ -28,7 +28,7 @@
       <a href="{% url 'webapp:password_reset' %}" class="card-link">パスワードを忘れた場合はこちら</a>
     </p>
     <p class="text-center">
-      <a href="{% url 'webapp:user_creation' %}" class="card-link">ユーザー登録はこちら</a>
+      <a href="{% url 'webapp:user_create' %}" class="card-link">ユーザー登録はこちら</a>
     </p>
   </div>
 </div>
