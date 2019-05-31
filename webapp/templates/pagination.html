@@ -12,8 +12,8 @@
   {% endif %}
 
   {% for page in page_obj.paginator.page_range %}
-  {% if page %}
-  {% ifequal page page_obj.number %}
+  {% if page == 1 or page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 or page == page_obj.paginator.num_pages %}
+  {% if page == page_obj.number %}
   <li class="active page-item">
     <span class="page-link">{{ page }}</span>
   </li>
@@ -21,7 +21,11 @@
   <li class="page-item">
     <a class="page-link" href="?{% replace_query request 'page' page %}">{{ page }}</a>
   </li>
-  {% endifequal %}
+  {% endif %}
+  {% elif page == 2 or page == page_obj.paginator.num_pages|add:-1 %}
+  <li class="disabled page-item">
+    <span class="page-link">&hellip;</span>
+  </li>
   {% endif %}
   {% endfor %}
 
