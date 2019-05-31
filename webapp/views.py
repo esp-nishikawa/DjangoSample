@@ -468,6 +468,13 @@ class ItemCreate(LoginRequiredMixin, generic.CreateView):
     form_class = forms.ItemForm
     template_name = 'item_create.html'
 
+    def get_form_kwargs(self):
+        # フォームにユーザー＆カテゴリを渡す
+        kwargs = super().get_form_kwargs()
+        kwargs.update({ 'user': self.request.user })
+        kwargs.update({ 'category': self.request.GET.get('category') })
+        return kwargs
+
     def form_valid(self, form):
         # その他のアイテムの順序を+1する
         items = []
@@ -476,10 +483,7 @@ class ItemCreate(LoginRequiredMixin, generic.CreateView):
             items.append(item)
         Item.objects.bulk_update(items, fields=['order'])
 
-        # カテゴリ＆オーナーを設定
-        category_pk = self.request.GET.get('category')
-        if category_pk is not None:
-            form.instance.category = Category.objects.filter(owner=self.request.user).get(pk=category_pk)
+        # オーナーを設定
         form.instance.owner = self.request.user
         messages.success(self.request, 'アイテム（{}）を追加しました。'.format(form.instance.title))
         return super().form_valid(form)
@@ -499,6 +503,13 @@ class ItemUpdate(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Item
     form_class = forms.ItemForm
     template_name = 'item_update.html'
+
+    def get_form_kwargs(self):
+        # フォームにユーザー＆カテゴリを渡す
+        kwargs = super().get_form_kwargs()
+        kwargs.update({ 'user': self.request.user })
+        kwargs.update({ 'category': self.request.GET.get('category') })
+        return kwargs
 
     def form_valid(self, form):
         messages.success(self.request, 'アイテム（{}）を変更しました。'.format(form.instance.title))

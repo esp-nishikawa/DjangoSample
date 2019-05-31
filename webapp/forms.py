@@ -106,7 +106,7 @@ class ItemForm(forms.ModelForm):
     """
     class Meta:
         model = Item
-        fields = ('title','description','image','url','mark',)
+        fields = ('title','description','image','url','mark','category',)
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -124,3 +124,21 @@ class ItemForm(forms.ModelForm):
                 'class': 'form-control',
             }),
         }
+
+    def __init__(self, *args, **kwargs):
+        # ユーザー＆カテゴリを取得
+        user = kwargs.pop('user')
+        category = kwargs.pop('category')
+        super().__init__(*args, **kwargs)
+
+        # カテゴリ選択フィールド
+        self.fields['category'] = forms.ModelChoiceField(
+            widget = forms.Select(attrs={
+                'class': 'form-control',
+            }),
+            queryset = Category.objects.filter(owner=user),
+            required = False,
+            empty_label = 'カテゴリなし',
+            label = 'カテゴリ',
+            initial = category,
+        )
